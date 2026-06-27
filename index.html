@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Viscosity Gaming Studio — Coming Soon</title>
+<meta name="description" content="Viscosity Gaming Studio. Flow. Adapt. Dominate. Something is coming." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#050308;
+    --violet:#8b3fe8;
+    --violet-bright:#a855f7;
+    --violet-soft:#c08cff;
+    --ink:#ECE8F6;
+    --muted:#8d86a6;
+    --line:rgba(168,85,247,.18);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Inter",system-ui,sans-serif;
+    overflow-x:hidden;
+    min-height:100vh;
+    position:relative;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- animated liquid background ---------- */
+  .bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:
+      radial-gradient(1200px 600px at 50% -10%, rgba(139,63,232,.14), transparent 60%),
+      radial-gradient(900px 500px at 100% 110%, rgba(120,40,200,.10), transparent 60%),
+      var(--bg);}
+  .blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;mix-blend-mode:screen;}
+  .blob.a{width:560px;height:560px;left:-160px;top:8%;background:radial-gradient(circle,#7a28d6,transparent 70%);animation:drift1 18s ease-in-out infinite;}
+  .blob.b{width:620px;height:620px;right:-180px;bottom:-6%;background:radial-gradient(circle,#5b1fb0,transparent 70%);animation:drift2 22s ease-in-out infinite;}
+  .blob.c{width:420px;height:420px;left:42%;top:42%;background:radial-gradient(circle,#a855f7,transparent 70%);opacity:.28;animation:drift3 26s ease-in-out infinite;}
+  @keyframes drift1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(60px,40px) scale(1.12)}}
+  @keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-50px,-40px) scale(1.08)}}
+  @keyframes drift3{0%,100%{transform:translate(-50%,0) scale(1)}50%{transform:translate(-46%,-30px) scale(1.15)}}
+
+  .grid{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.4;
+    background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:64px 64px;mask-image:radial-gradient(circle at 50% 40%,#000 0%,transparent 78%);}
+  .scan{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;
+    background:repeating-linear-gradient(0deg,#fff 0 1px,transparent 1px 3px);}
+
+  .hud{position:fixed;z-index:3;width:46px;height:46px;border:2px solid rgba(168,85,247,.45);pointer-events:none}
+  .hud.tl{top:24px;left:24px;border-right:none;border-bottom:none}
+  .hud.tr{top:24px;right:24px;border-left:none;border-bottom:none}
+  .hud.bl{bottom:24px;left:24px;border-right:none;border-top:none}
+  .hud.br{bottom:24px;right:24px;border-left:none;border-top:none}
+
+  /* ---------- content ---------- */
+  .wrap{position:relative;z-index:4;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:70px 22px 40px;}
+
+  .boot{width:min(440px,88vw);border:1px solid var(--line);border-radius:13px;background:rgba(139,63,232,.06);backdrop-filter:blur(7px);padding:12px 15px 13px;margin-bottom:32px;}
+  .boot-head{display:flex;align-items:center;gap:10px;font-family:"Chakra Petch";font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--violet-soft)}
+  .boot-head #boot-msg{flex:1;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ekg{margin-top:11px;width:100%;height:30px;display:block;overflow:visible;animation:ekgflash 1.05s ease-in-out infinite}
+  @keyframes ekgflash{
+    0%,100%{filter:drop-shadow(0 0 3px var(--violet)) brightness(1)}
+    50%{filter:drop-shadow(0 0 11px #ffffff) drop-shadow(0 0 7px var(--violet-bright)) brightness(1.5)}}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--violet-bright);box-shadow:0 0 12px var(--violet-bright);animation:pulse 1.6s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.7)}}
+
+  /* ---------- logo: bigger, rounded/feathered, with a slow glow pooling underneath ---------- */
+  .logo-stage{position:relative;width:min(1240px,97vw);display:flex;justify-content:center;align-items:center;animation:rise 1s cubic-bezier(.2,.8,.2,1) both;}
+  .logo-glow{position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);width:78%;height:86%;z-index:0;pointer-events:none;
+    background:radial-gradient(ellipse at center, rgba(168,85,247,.6), rgba(139,63,232,.22) 42%, transparent 70%);
+    filter:blur(65px);animation:glowpulse 5.5s ease-in-out infinite;}
+  @keyframes glowpulse{0%,100%{opacity:.42;transform:translate(-50%,-50%) scale(1)}50%{opacity:.9;transform:translate(-50%,-50%) scale(1.14)}}
+  .banner{position:relative;z-index:1;width:100%;border-radius:28px;will-change:transform,filter;
+    animation:logoFloat 6s ease-in-out infinite;}
+  @keyframes logoFloat{
+    0%,100%{transform:translateY(0) scale(1);filter:drop-shadow(0 0 28px rgba(139,63,232,.30))}
+    50%{transform:translateY(-14px) scale(1.025);filter:drop-shadow(0 0 60px rgba(168,85,247,.60))}}
+  @keyframes rise{from{opacity:0;transform:translateY(22px) scale(.985)}to{opacity:1;transform:none}}
+
+  h1{font-family:"Chakra Petch";font-weight:700;text-transform:uppercase;letter-spacing:.42em;font-size:clamp(24px,5vw,54px);margin:10px 0 0;
+     background:linear-gradient(180deg,#fff 0%,#c08cff 60%,#7a28d6 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+     text-shadow:0 0 50px rgba(168,85,247,.25);}
+  .tag{font-family:"Chakra Petch";font-weight:500;letter-spacing:.5em;font-size:clamp(10px,1.7vw,14px);color:var(--violet-soft);text-transform:uppercase;margin-top:14px;display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
+  .tag .sep{color:rgba(168,85,247,.4)}
+
+  /* ---------- countdown ---------- */
+  .countdown{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap;justify-content:center}
+  .cd{min-width:88px;padding:16px 10px 12px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,rgba(139,63,232,.10),rgba(255,255,255,.015));backdrop-filter:blur(6px);position:relative;overflow:hidden}
+  .cd::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--violet-bright),transparent);opacity:.7}
+  .cd span{display:block;font-family:"Chakra Petch";font-weight:700;font-size:clamp(28px,4.4vw,42px);line-height:1;color:#fff;text-shadow:0 0 22px rgba(168,85,247,.5);font-variant-numeric:tabular-nums}
+  .cd label{display:block;margin-top:8px;font-family:"Chakra Petch";font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
+
+  .blurb{max-width:560px;color:var(--muted);font-size:15px;line-height:1.7;margin-top:30px}
+
+  .flow{width:min(420px,80vw);height:3px;border-radius:3px;background:rgba(168,85,247,.14);overflow:hidden;margin-top:30px;position:relative}
+  .flow::before{content:"";position:absolute;inset:0;width:40%;border-radius:3px;background:linear-gradient(90deg,transparent,var(--violet-bright),#e9d5ff,var(--violet-bright),transparent);box-shadow:0 0 16px var(--violet-bright);animation:flow 2.1s ease-in-out infinite}
+  @keyframes flow{0%{transform:translateX(-120%)}100%{transform:translateX(320%)}}
+
+  .notify{margin-top:34px;display:flex;gap:10px;width:min(440px,88vw)}
+  .notify input{flex:1;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:10px;padding:13px 16px;color:var(--ink);font-family:"Inter";font-size:14px;outline:none;transition:.25s}
+  .notify input::placeholder{color:#6f6987}
+  .notify input:focus{border-color:rgba(168,85,247,.6);box-shadow:0 0 0 3px rgba(139,63,232,.14)}
+  .btn{font-family:"Chakra Petch";font-weight:600;letter-spacing:.12em;text-transform:uppercase;font-size:13px;cursor:pointer;border:none;border-radius:10px;padding:0 22px;color:#fff;
+       background:linear-gradient(135deg,#8b3fe8,#6a1fc0);box-shadow:0 8px 26px rgba(139,63,232,.4);transition:.25s;white-space:nowrap}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 12px 34px rgba(139,63,232,.6)}
+  .note{font-size:11.5px;color:#605a78;margin-top:12px;letter-spacing:.04em}
+
+  .socials{margin-top:28px;display:flex;gap:14px}
+  .socials a{width:42px;height:42px;display:grid;place-items:center;border:1px solid var(--line);border-radius:11px;color:var(--violet-soft);background:rgba(255,255,255,.02);transition:.25s}
+  .socials a:hover{color:#fff;border-color:rgba(168,85,247,.7);background:rgba(139,63,232,.16);transform:translateY(-2px)}
+  .socials svg{width:19px;height:19px}
+
+  footer{position:relative;z-index:4;text-align:center;color:#544e6c;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;font-family:"Chakra Petch";padding:24px}
+</style>
+</head>
+<body>
+  <div class="bg"><span class="blob a"></span><span class="blob b"></span><span class="blob c"></span></div>
+  <div class="grid"></div>
+  <div class="scan"></div>
+  <span class="hud tl"></span><span class="hud tr"></span><span class="hud bl"></span><span class="hud br"></span>
+
+  <main class="wrap">
+    <div class="boot">
+      <div class="boot-head">
+        <span class="dot"></span>
+        <span id="boot-msg">Initializing core systems</span>
+      </div>
+      <canvas class="ekg" id="ekg"></canvas>
+    </div>
+
+    <div class="logo-stage">
+      <div class="logo-glow"></div>
+      <img class="banner" src="assets/banner.png" alt="Viscosity Gaming Studio" />
+    </div>
+
+    <h1>Coming Soon</h1>
+    <div class="tag"><span>Flow.</span><span class="sep">/</span><span>Adapt.</span><span class="sep">/</span><span>Dominate.</span></div>
+
+    <div class="countdown" id="countdown">
+      <div class="cd"><span id="cd-d">00</span><label>Days</label></div>
+      <div class="cd"><span id="cd-h">00</span><label>Hours</label></div>
+      <div class="cd"><span id="cd-m">00</span><label>Minutes</label></div>
+      <div class="cd"><span id="cd-s">00</span><label>Seconds</label></div>
+    </div>
+
+    <p class="blurb">Something is taking shape beneath the surface. A new standard for roleplay, built with zero limits. The flow begins soon.</p>
+
+    <div class="flow"></div>
+
+    <form class="notify" onsubmit="event.preventDefault();this.querySelector('input').value='';this.nextElementSibling.textContent='You’re on the list. We’ll be in touch.';">
+      <input type="email" placeholder="Enter your email for early access" required />
+      <button class="btn" type="submit">Notify Me</button>
+    </form>
+    <div class="note">High flow. Zero limits. &nbsp;·&nbsp; No spam, just the launch signal.</div>
+
+    <div class="socials">
+      <a href="#" aria-label="Discord" title="Discord"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.2.5c1.7.4 2.5.9 3.4 1.6a13.8 13.8 0 0 0-12-.5c.3-.2.6-.4.9-.6l-.2-.5A19.8 19.8 0 0 0 3.7 4.4 20.3 20.3 0 0 0 .2 18a19.9 19.9 0 0 0 6 3l.8-1.3c-.7-.3-1.3-.6-1.9-1l.5-.3a14.2 14.2 0 0 0 12.8 0l.5.3c-.6.4-1.2.7-1.9 1l.8 1.3a19.9 19.9 0 0 0 6-3 20.3 20.3 0 0 0-3.8-13.6ZM8.3 14.8c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Zm7.4 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Z"/></svg></a>
+      <a href="#" aria-label="X" title="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.2 2.3h3.3l-7.2 8.3 8.5 11.1h-6.6l-5.2-6.8-6 6.8H1.7l7.7-8.8L1.2 2.3H8l4.7 6.2 5.5-6.2Zm-1.2 17.5h1.8L7.1 4.1H5.2L17 19.8Z"/></svg></a>
+      <a href="#" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.5a3 3 0 0 0-2.1-2.1C19 4.9 12 4.9 12 4.9s-7 0-8.9.5A3 3 0 0 0 1 7.5 31 31 0 0 0 .5 12 31 31 0 0 0 1 16.5a3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.5 31 31 0 0 0-.5-4.5ZM9.8 15.3V8.7l5.7 3.3-5.7 3.3Z"/></svg></a>
+    </div>
+  </main>
+
+  <footer>© 2026 Viscosity Gaming Studio — All Rights Reserved</footer>
+
+<script>
+  // ===== Countdown — edit this launch date/time (local time) =====
+  const LAUNCH = new Date("2026-08-08T18:00:00").getTime();
+  const pad = n => String(n).padStart(2,"0");
+  function tick(){
+    let diff = LAUNCH - Date.now();
+    if(diff < 0) diff = 0;
+    const d = Math.floor(diff/86400000);
+    const h = Math.floor(diff%86400000/3600000);
+    const m = Math.floor(diff%3600000/60000);
+    const s = Math.floor(diff%60000/1000);
+    document.getElementById("cd-d").textContent = pad(d);
+    document.getElementById("cd-h").textContent = pad(h);
+    document.getElementById("cd-m").textContent = pad(m);
+    document.getElementById("cd-s").textContent = pad(s);
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  // ===== Boot loader — cycle the loading step labels =====
+  const STEPS = [
+    "Initializing core systems","Calibrating flow dynamics","Mounting world assets",
+    "Syncing roleplay engine","Establishing secure uplink","Compiling shaders",
+    "Loading resource packs","Hydrating database","Optimizing netcode",
+    "Spinning up servers","Rendering environment","Finalizing"
+  ];
+  const msgEl = document.getElementById("boot-msg");
+  let si = 0;
+  msgEl.textContent = STEPS[0];
+  setInterval(() => { si = (si + 1) % STEPS.length; msgEl.textContent = STEPS[si]; }, 2600);
+
+  // ===== Live, chaotic EKG drawn in real time on a canvas =====
+  (function(){
+    const cv = document.getElementById("ekg");
+    const ctx = cv.getContext("2d");
+    const dpr = Math.max(1, window.devicePixelRatio || 1);
+    let W = 1, H = 1, baseY = 0, data = [];
+    function resize(){
+      const r = cv.getBoundingClientRect();
+      W = Math.max(1, Math.round(r.width));
+      H = Math.max(1, Math.round(r.height));
+      cv.width = W * dpr; cv.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      baseY = H / 2;
+      data = new Array(W).fill(0);
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    let gap = 16, beatT = -1, beatLen = 0, beatAmp = 1;
+    function scheduleNext(){
+      // chaotic rhythm: usually a normal gap, sometimes a rapid burst (palpitations/excitement)
+      gap = (Math.random() < 0.22) ? (4 + Math.random()*9) : (18 + Math.random()*72);
+    }
+    function startBeat(){
+      beatT = 0;
+      beatLen = 8 + Math.floor(Math.random()*11);   // width varies each beat
+      beatAmp = 0.4 + Math.random()*1.8;            // size varies each beat
+      if(Math.random() < 0.14) beatAmp *= 1.9;      // occasional excitement spike
+    }
+    function shape(x){ // 0..1 across the beat -> offset (up = positive)
+      if(x < 0.18) return -0.12 * (x/0.18);
+      if(x < 0.34) return -0.12 + (x-0.18)/0.16 * 1.12;   // rise to R peak
+      if(x < 0.50) return 1.0 - (x-0.34)/0.16 * 1.45;     // fall to S
+      if(x < 0.70) return -0.45 + (x-0.50)/0.20 * 0.45;   // recover
+      return 0;
+    }
+    function nextSample(){
+      let v = (Math.random()-0.5) * 2.4;            // alive baseline jitter
+      if(beatT >= 0){
+        v += shape(beatT/beatLen) * (H*0.42) * beatAmp;
+        if(++beatT >= beatLen){ beatT = -1; scheduleNext(); }
+      } else if(--gap <= 0){ startBeat(); }
+      return v;
+    }
+    function clampY(y){ return Math.max(2, Math.min(H-2, y)); }
+    function draw(){
+      ctx.clearRect(0,0,W,H);
+      ctx.lineCap = "round";
+      for(let i=1;i<W;i++){
+        const t = i/W, a = Math.pow(t, 1.7);
+        ctx.beginPath();
+        ctx.moveTo(i-1, clampY(baseY - data[i-1]));
+        ctx.lineTo(i,   clampY(baseY - data[i]));
+        ctx.strokeStyle = (t > 0.9) ? "rgba(255,255,255,"+a+")" : "rgba(180,110,255,"+a+")";
+        ctx.lineWidth = 1.3 + t*1.5;
+        ctx.stroke();
+      }
+      ctx.fillStyle = "#fff";
+      ctx.beginPath(); ctx.arc(W-1, clampY(baseY - data[W-1]), 2.3, 0, 7); ctx.fill();
+    }
+    function frame(){
+      for(let k=0;k<2;k++){ data.push(nextSample()); if(data.length > W) data.shift(); }
+      draw();
+      requestAnimationFrame(frame);
+    }
+    scheduleNext();
+    requestAnimationFrame(frame);
+  })();
+</script>
+</body>
+</html>
